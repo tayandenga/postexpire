@@ -1,0 +1,26 @@
+services:
+    codefather.postexpire.listener:
+        class: codefather\postexpire\event\listener
+        arguments:
+            - '@auth'
+            - '@request'
+            - '@template'
+            - '@user'
+        tags:
+            - { name: event.listener }
+    codefather.postexpire.helper:
+        class: codefather\postexpire\includes\helper
+        arguments:
+            - '@dbal.conn'
+            - '@content.visibility'
+    codefather.postexpire.cron.task.post_expire:
+        class: codefather\postexpire\cron\task\post_expire
+        arguments:
+            - '@config'
+            - '@codefather.postexpire.helper'
+            - '@log'
+            - '@user'
+        calls:
+            - [set_name, [cron.task.post_expire]]
+        tags:
+            - { name: cron.task }

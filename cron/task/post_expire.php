@@ -79,15 +79,17 @@ class post_expire extends task_base
 	public function run()
 	{
 		$this->config->set('post_expire_last_run', time(), false);
-		$this->helper->post_expire();
+		$count = $this->helper->post_expire();
 
-		$this->log->add(
-			'admin',
-			$this->user->data['user_id'],
-			$this->user->ip,
-			'LOG_POST_EXPIRE',
-			false,
-			[]
-		);
+		if($count > 0) {
+			$this->log->add(
+				'admin',
+				$this->user->data['user_id'],
+				$this->user->ip,
+				'LOG_POST_EXPIRE',
+				false,
+				array($count)
+			);
+		}
 	}
 }

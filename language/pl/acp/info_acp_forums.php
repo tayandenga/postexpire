@@ -38,5 +38,5 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, array(
-	'LOG_POST_EXPIRE'	=> '<strong>Posty wygaszone</strong>'
+	'LOG_POST_EXPIRE'	=> '<strong>Posty wygaszone</strong>: %d'
 ));

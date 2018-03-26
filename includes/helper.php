@@ -51,7 +51,7 @@ class helper
 		$sql = 'SELECT `p`.`post_id`, `p`.`topic_id`, `p`.`forum_id`, `p`.`post_visibility`, `t`.`topic_first_post_id`, `t`.`topic_last_post_id`
 			FROM `' . POSTS_TABLE . '` p
 			LEFT JOIN `' . TOPICS_TABLE . '` t ON `p`.`topic_id` = `t`.`topic_id`
-			WHERE `p`.`post_expire` > (`p`.`post_time` + `p`.`post_expire` * 86400);';
+			WHERE `p`.`post_expire` > 0 AND UNIX_TIMESTAMP() >= (`p`.`post_time` + `p`.`post_expire` * 86400);';
 
 		$result = $this->db->sql_query($sql);
 		$rowset = $this->db->sql_fetchrowset($result);
@@ -63,6 +63,7 @@ class helper
 				continue;
 			}
 
+			array_push($posts, $post['post_id']);
 			if ($post['post_id'] == $post['topic_first_post_id']) {
 				$this->cv->set_topic_visibility(ITEM_DELETED, $post['topic_id'], $post['forum_id'], 0, time(), '', true);
 			} elseif ($post['post_id'] == $post['topic_last_post_id']) {

@@ -120,7 +120,7 @@ class listener implements EventSubscriberInterface
 	public function submit_post_modify_sql_data($event)
 	{
 		$sql_data = $event['sql_data'];
-		$sql_data[POSTS_TABLE]['sql']['post_expire'] = $event['data']['post_expire'];
+		$sql_data[POSTS_TABLE]['sql']['post_expire'] = isset($event['data']['post_expire']) ? $event['data']['post_expire'] : 0;
 		$event['sql_data'] = $sql_data;
 	}
 
